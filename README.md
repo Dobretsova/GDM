@@ -1,1 +1,73 @@
-# GDM
+import tkinter as tk
+
+class GSDCalculator:
+    def __init__(self):
+        self.window = tk.Tk()
+        self.window.title("Калькулятор гестационного сахарного диабета")
+
+        # Создание полей для ввода значений
+        self.alanine_label = tk.Label(self.window, text="Концентрация аланина:")
+        self.alanine_label.grid(row=0, column=0)
+        self.alanine_entry = tk.Entry(self.window)
+        self.alanine_entry.grid(row=0, column=1)
+
+        self.asparagine_label = tk.Label(self.window, text="Концентрация аспаргина:")
+        self.asparagine_label.grid(row=1, column=0)
+        self.asparagine_entry = tk.Entry(self.window)
+        self.asparagine_entry.grid(row=1, column=1)
+
+        self.aspartic_acid_label = tk.Label(self.window, text="Концентрация аспаргиновой кислоты:")
+        self.aspartic_acid_label.grid(row=2, column=0)
+        self.aspartic_acid_entry = tk.Entry(self.window)
+        self.aspartic_acid_entry.grid(row=2, column=1)
+
+        self.glycine_label = tk.Label(self.window, text="Концентрация глицина:")
+        self.glycine_label.grid(row=3, column=0)
+        self.glycine_entry = tk.Entry(self.window)
+        self.glycine_entry.grid(row=3, column=1)
+
+        self.glutamine_label = tk.Label(self.window, text="Концентрация глутамина:")
+        self.glutamine_label.grid(row=4, column=0)
+        self.glutamine_entry = tk.Entry(self.window)
+        self.glutamine_entry.grid(row=4, column=1)
+
+        self.glutamic_acid_label = tk.Label(self.window, text="Концентрация глутаминовой кислоты:")
+        self.glutamic_acid_label.grid(row=5, column=0)
+        self.glutamic_acid_entry = tk.Entry(self.window)
+        self.glutamic_acid_entry.grid(row=5, column=1)
+
+        # Создание кнопки для расчета
+        self.calculate_button = tk.Button(self.window, text="Рассчитать", command=self.calculate_gsd_risk)
+        self.calculate_button.grid(row=6, column=0, columnspan=2)
+
+        # Создание поля для вывода результата
+        self.result_label = tk.Label(self.window, text="Риск гестационного сахарного диабета:")
+        self.result_label.grid(row=7, column=0)
+        self.result_text = tk.Text(self.window, height=1, width=20)
+        self.result_text.grid(row=7, column=1)
+
+    def calculate_gsd_risk(self):
+        alanine = float(self.alanine_entry.get())
+        asparagine = float(self.asparagine_entry.get())
+        aspartic_acid = float(self.aspartic_acid_entry.get())
+        glycine = float(self.glycine_entry.get())
+        glutamine = float(self.glutamine_entry.get())
+        glutamic_acid = float(self.glutamic_acid_entry.get())
+
+        z = 288.780 + (1.326 * alanine) - (235.461 * aspartic_acid) - (14.813 * asparagine) - (4.032 * glycine) + (41.517 * glutamine) + (72.569 * glutamic_acid)
+        p = 1 / (1 + (2.71828 ** -z)) * 100
+
+        if p <= 0.557:
+            result = "Высокий риск"
+        else:
+            result = "Низкий риск"
+
+        self.result_text.delete(1.0, tk.END)
+        self.result_text.insert(tk.END, result)
+
+    def run(self):
+        self.window.mainloop()
+
+if __name__ == "__main__":
+    calculator = GSDCalculator()
+    calculator.run()
